@@ -1,0 +1,12 @@
+.navigation{
+    display: flex;
+    align-items: center;
+    height: 80px;
+    padding: 0 40px;
+    background-color: var(--color-primary);
+    color:var(--color-white);
+
+    font-size: 24px;
+    font-weight: 700;
+    text-decoration: underline;
+}
