@@ -1,6 +1,7 @@
 import { getPost } from 'api/posts';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { withCSR } from 'HOC/with-CSR'
+import { config } from 'lib/react-query-config'
 import Error from 'components/Error';
 import PostPage from 'containers/PostPage';
 
@@ -19,19 +20,15 @@ export const getServerSideProps = withCSR(async (ctx) => {
 
     const { id } = ctx.params;
 
-    const queryClient = new QueryClient();
+    const queryClient = new QueryClient(config);
 
-    await queryClient.prefetchQuery(['post', id], () => getPost(id));
+    let isError = false;
 
-    //get post state
-    const state = queryClient.getQueryState(['post', id]);
-
-    // check if the state has error
-    const isError = !!state.error;
-
-    // if there is an error we will change response status code
-    if (isError) {
-        ctx.res.statusCode = state.error.response.status
+    try {
+        await queryClient.fetchQuery(['post', id], () => getPost(id));
+    } catch (error) {
+        isError = true
+        ctx.res.statusCode = error.response.status;
     }
 
     return {
