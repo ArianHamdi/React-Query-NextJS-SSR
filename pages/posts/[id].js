@@ -1,7 +1,6 @@
 import { getPost } from 'api/posts';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { withCSR } from 'HOC/with-CSR'
-import { config } from 'lib/react-query-config'
 import Error from 'components/Error';
 import PostPage from 'containers/PostPage';
 
@@ -20,7 +19,7 @@ export const getServerSideProps = withCSR(async (ctx) => {
 
     const { id } = ctx.params;
 
-    const queryClient = new QueryClient(config);
+    const queryClient = new QueryClient();
 
     let isError = false;
 
